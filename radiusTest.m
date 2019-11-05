@@ -74,10 +74,10 @@ logeps = log(eps);
 epsTo5on3 = arrayfun(@(a) a^(5/3), eps);
 solvedTerms = log(rad_cubed - eps - epsTo5on3);
 plot(logeps, solvedTerms)
+p2 = polyfit(logeps, solvedTerms, 1);
 hold on
 fplot(p2(1)*x + p2(2))
 hold off
-p2 = polyfit(logeps, solvedTerms, 1);
 % p2 --> 2.333, c2 --> ?? (polyfit is saying around 0.51)
 anotherGuess = arrayfun(@(a) (a + a^(5/3) + a^(7/3))^(1/3), eps);
 check2 = rad - anotherGuess;
@@ -114,12 +114,41 @@ rng(0);
 n=10;
 solutions = cell(n, 1);
 for k = 1:n  
-    e1 = randi(length(eps));
-    e2 = randi(length(eps));
+    e1 = randi(length(eps))
+    e2 = randi(length(eps))
     A = [1 eps(e1)^(2/3); 1 eps(e2)^(2/3)];
     B = [(rad(e1)^3-eps(e1))/eps(e1)^(5/3) (rad(e2)^3-eps(e2))/eps(e2)^(5/3)];
     B = B';
-    X = linsolve(A,B);
+    X = linsolve(A,B)
     solutions{k} = X;
 end
+% a --> 1, b --> 5/3
+
+%% Other code that didn't quite make the cut
+%% Set up eps with larger values
+% Set up a bunch of epsilon values
+n = 10e5;
+eps = zeros(1, n);
+for k = 1:n
+    % 1 --> 1/10^5
+    eps(k) = 1/(k);
+end
+
+% Get corresponding radii
+rad = zeros(1, n);
+for k = 1:n
+    rad(k) = findradius(J,eps(k));
+end
+
+%% Let's try for another term with larger eps values
+% r = (e + e^(5/3) + (5/3)e^(7/3) + c e^p)^(1/3)
+logeps = log(eps);
+rad_cubed = arrayfun(@(x) x^(3), rad);
+epsTo5on3 = arrayfun(@(a) a^(5/3), eps);
+epsTo7on3 = arrayfun(@(a) a^(7/3), eps);
+solvedTerms = log(rad_cubed - eps - epsTo5on3 - (5/3)*epsTo7on3);
+newp = polyfit(logeps, solvedTerms, 1);
+% p --> 3, c --> 0.3348... ??
+% p = 9/3 makes sense, but not sure about this constant...
+
 
