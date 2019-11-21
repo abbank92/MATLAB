@@ -114,17 +114,16 @@ rng(0);
 n=10;
 solutions = cell(n, 1);
 for k = 1:n  
-    e1 = randi(length(eps))
-    e2 = randi(length(eps))
+    e1 = randi(length(eps));
+    e2 = randi(length(eps));
     A = [1 eps(e1)^(2/3); 1 eps(e2)^(2/3)];
     B = [(rad(e1)^3-eps(e1))/eps(e1)^(5/3) (rad(e2)^3-eps(e2))/eps(e2)^(5/3)];
     B = B';
-    X = linsolve(A,B)
+    X = linsolve(A,B);
     solutions{k} = X;
 end
 % a --> 1, b --> 5/3
 
-%% Other code that didn't quite make the cut
 %% Set up eps with larger values
 % Set up a bunch of epsilon values
 n = 10e5;
