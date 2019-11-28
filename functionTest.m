@@ -1,4 +1,5 @@
 %% Function Test
+J = [0 1 0; 0 0 1; 0 0 0];
 
 % Set up a bunch of epsilon values
 eps = (1e7):(1e3):(1e8);
@@ -68,3 +69,70 @@ knownTerms = [1 1; 1 1.5];
 knownTerms = [1 1; 1 1.5; 1.5 2];
 [pk4c, ck4c] = findNextPower(eps, radEps, k, knownTerms);
 % p2 --> 2
+% c2 --> ??
+
+%% Solving for ck4c
+ck4bSolved = zeros(1,10);
+for index = 0:9
+    smolEps = eps(length(eps)-index);
+    smolRad = radEps(length(radEps)-index);
+    ck4bSolved(index+1) = (smolRad^4 - smolEps - smolEps^(6/4))/(smolEps^(8/4));
+end
+
+
+ck4cSolved = zeros(1,10);
+for index = 0:9
+    smolEps = eps(length(eps)-index);
+    smolRad = radEps(length(radEps)-index);
+    ck4cSolved(index+1) = (smolRad^4 - smolEps - smolEps^(6/4) - 6/4*smolEps^(8/4))/(smolEps^(10/4));
+end
+
+%% Moving on... k=5
+J5 = [0 1 0 0 0; 0 0 1 0 0; 0 0 0 1 0; 0 0 0 0 1; 0 0 0 0 0];
+
+eps = (1e7):(1e3):(1e8);
+eps = arrayfun(@(x) 1/x, eps);
+radEps = zeros(1, length(eps));
+for k = 1:length(eps)
+    radEps(k) = findradius(J5,eps(k));
+end
+
+knownTerms = [1 1];
+k = 5;
+[pk5, ck5] = findNextPower(eps, radEps, k, knownTerms);
+
+
+% hmmmm... so we get 
+% p1 --> 1.4
+% c1 --> 1
+
+knownTerms = [1 1; 1 1.4];
+k = 5;
+[pk5b, ck5b] = findNextPower(eps, radEps, k, knownTerms);
+% p2 --> 1.8
+% c2 --> 1.4
+
+knownTerms = [1 1; 1 1.4; 1.4 1.8];
+k = 5;
+[pk5c, ck5c] = findNextPower(eps, radEps, k, knownTerms);
+% p3 --> 2.2
+% c3 --> ??
+
+
+%% Moving backwards... k=2
+J2 = [0 1; 0 0];
+
+eps = (1e7):(1e3):(1e8);
+eps = arrayfun(@(x) 1/x, eps);
+radEps = zeros(1, length(eps));
+for k = 1:length(eps)
+    radEps(k) = findradius(J2,eps(k));
+end
+
+knownTerms = [1 1];
+k = 2;
+[pk2, ck2] = findNextPower(eps, radEps, k, knownTerms);
+
+knownTerms = [1 1; 1 2];
+k = 2;
+[pk2b, ck2b] = findNextPower(eps, radEps, k, knownTerms);
