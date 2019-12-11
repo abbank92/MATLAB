@@ -72,19 +72,20 @@ knownTerms = [1 1; 1 1.5; 1.5 2];
 % c2 --> ??
 
 %% Solving for ck4c
-ck4bSolved = zeros(1,10);
+% RUN BLOCK ABOVE TO GET EPS AND RADEPS
+ck5bSolved = zeros(1,10);
 for index = 0:9
     smolEps = eps(length(eps)-index);
     smolRad = radEps(length(radEps)-index);
-    ck4bSolved(index+1) = (smolRad^4 - smolEps - smolEps^(6/4))/(smolEps^(8/4));
+    ck5bSolved(index+1) = (smolRad^4 - smolEps - smolEps^(6/4))/(smolEps^(8/4));
 end
 
 
-ck4cSolved = zeros(1,10);
+ck5cSolved = zeros(1,10);
 for index = 0:9
     smolEps = eps(length(eps)-index);
     smolRad = radEps(length(radEps)-index);
-    ck4cSolved(index+1) = (smolRad^4 - smolEps - smolEps^(6/4) - 6/4*smolEps^(8/4))/(smolEps^(10/4));
+    ck5cSolved(index+1) = (smolRad^4 - smolEps - smolEps^(6/4) - 6/4*smolEps^(8/4))/(smolEps^(10/4));
 end
 
 %% Moving on... k=5
@@ -117,8 +118,28 @@ k = 5;
 [pk5c, ck5c] = findNextPower(eps, radEps, k, knownTerms);
 % p3 --> 2.2
 % c3 --> ??
+% let's say it really is ~ 2.625
+
+knownTerms = [1 1; 1 1.4; 1.4 1.8; 2.2 2.625];
+k=5;
+[pk5d, ck5d] = findNextPower(eps, radEps, k, knownTerms);
+
+%% Solving for ck5c
+% RUN BLOCK ABOVE TO GET EPS AND RADEPS
+ck5bSolved = zeros(1,10);
+for index = 0:9
+    smolEps = eps(length(eps)-index);
+    smolRad = radEps(length(radEps)-index);
+    ck5bSolved(index+1) = (smolRad^5 - smolEps - smolEps^(7/5))/(smolEps^(9/5));
+end
 
 
+ck5cSolved = zeros(1,10);
+for index = 0:9
+    smolEps = eps(length(eps)-index);
+    smolRad = radEps(length(radEps)-index);
+    ck5cSolved(index+1) = (smolRad^5 - smolEps - smolEps^(7/5) - 7/5*smolEps^(9/5))/(smolEps^(11/5));
+end
 %% Moving backwards... k=2
 J2 = [0 1; 0 0];
 
