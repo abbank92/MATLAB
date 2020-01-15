@@ -68,8 +68,15 @@ knownTerms = [1 1; 1 1.5];
 
 knownTerms = [1 1; 1 1.5; 1.5 2];
 [pk4c, ck4c] = findNextPower(eps, radEps, k, knownTerms);
-% p2 --> 2
+% p3 --> 2.5
 % c2 --> ??
+
+% Here's a test run using wrong constants
+knownTerms = [1 1; 1 1.5; 1 2];
+[pk4cFake, ck4cFake] = findNextPower(eps, radEps, k, knownTerms);
+% Returns p4 --> 2
+% This helps us show that we have the right constants
+
 
 %% Solving for ck4c
 % RUN BLOCK ABOVE TO GET EPS AND RADEPS
@@ -89,13 +96,13 @@ for index = 0:9
 end
 
 %% Moving on... k=5
-J5 = [0 1 0 0 0; 0 0 1 0 0; 0 0 0 1 0; 0 0 0 0 1; 0 0 0 0 0];
+J6 = [0 1 0 0 0; 0 0 1 0 0; 0 0 0 1 0; 0 0 0 0 1; 0 0 0 0 0];
 
 eps = (1e7):(1e3):(1e8);
 eps = arrayfun(@(x) 1/x, eps);
 radEps = zeros(1, length(eps));
 for k = 1:length(eps)
-    radEps(k) = findradius(J5,eps(k));
+    radEps(k) = findradius(J6,eps(k));
 end
 
 knownTerms = [1 1];
@@ -157,3 +164,31 @@ k = 2;
 knownTerms = [1 1; 1 2];
 k = 2;
 [pk2b, ck2b] = findNextPower(eps, radEps, k, knownTerms);
+
+%% Moving on... k=6
+J6 = [0 1 0 0 0 0; 0 0 1 0 0 0; 0 0 0 1 0 0; 0 0 0 0 1 0; 0 0 0 0 0 1; 0 0 0 0 0 0];
+
+eps = (1e7):(1e3):(1e8);
+eps = arrayfun(@(x) 1/x, eps);
+radEps = zeros(1, length(eps));
+for k = 1:length(eps)
+    radEps(k) = findradius(J6,eps(k));
+end
+
+knownTerms = [1 1];
+k = 6;
+[pk6, ck6] = findNextPower(eps, radEps, k, knownTerms);
+
+% p1 --> 1.333
+% c1 --> 1
+
+knownTerms = [1 1; 1 8/6];
+k = 6;
+[pk6b, ck6b] = findNextPower(eps, radEps, k, knownTerms);
+
+% try for one more
+
+knownTerms = [1 1; 1 8/6; 8/6 10/6];
+k = 6;
+[pk6c, ck6c] = findNextPower(eps, radEps, k, knownTerms);
+
